@@ -1,0 +1,55 @@
+.auth {
+  display: flex;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #151a30;
+
+  .login {
+    background-color: #222b45;
+    max-width: 450px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0 0 10px #00000011;
+    padding: 3rem 2rem;
+    border-radius: 1rem;
+
+    .logo-container {
+      width: 100%;
+      text-align: center;
+      
+    }
+    img {
+
+      &.logo {
+        margin-bottom: 2rem;
+        filter: brightness(0) invert(1);
+      }
+    }
+
+    .form-control-group {
+      margin-bottom: 1rem;
+    }
+
+    nb-alert {
+      background: transparent;
+      border: none;
+      
+      p {
+        color: #ff3d71;
+        text-align: center;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+    }
+
+    div.acknowledgement {
+      span.custom-checkbox {
+        margin-top: -22px;
+      }
+    }
+
+  }
+}

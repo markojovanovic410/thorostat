@@ -1,0 +1,53 @@
+.list-item {
+  .highlights {
+    p {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 20%;
+      text-align: center;
+
+      &.avatar {
+        width: 50px;
+        img {
+          width: 50px;
+          height: 50px;
+          border-radius: 50%;
+          object-fit: cover;
+
+          &.no-avatar {
+            filter: brightness(0) invert(1);
+          }
+        }
+        nb-icon {
+          border-radius: 50%;
+          box-shadow: 0 0 5px 0 #ffffff;
+        }
+      }
+
+    }
+
+    div.actions {
+      width: 20%;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      a {
+        nb-icon {
+          color: #fff;
+        }
+        &:hover {
+          nb-icon {
+            color: #3366ff;
+          }
+        }
+      }
+    }
+  }
+  
+}
+
+.btn-confirm-delete {
+  margin-right: 1rem;
+}

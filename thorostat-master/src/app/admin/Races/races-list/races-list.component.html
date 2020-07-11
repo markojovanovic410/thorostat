@@ -1,0 +1,284 @@
+<div class="races-list">
+  <div class="row">
+
+    <div class="col-md-2">
+      <nb-card>
+        <nb-card-body>
+
+          <div class="form-group">
+            <label for="datepicker" class="label">Date:</label>
+            <input nbInput
+                fullWidth
+                placeholder="Today"
+                [nbDatepicker]="datepicker">
+            <nb-datepicker #datepicker (dateChange)="pickRaceDate($event)"></nb-datepicker>
+          </div>
+
+          <div class="form-group" [nbSpinner]="loadingTracks">
+            <label for="track" class="label">Choose Track:</label>
+            <nb-select id="track" fullWidth 
+              *ngIf="track_codes.length" 
+              (selectedChange)="loadRaces($event)"
+              placeholder="Choose a Track">
+                <nb-option *ngFor="let track_info of track_codes" [value]="track_info.track_code">{{ track_info.track && track_info.track.track_name }}</nb-option>
+            </nb-select>
+            <nb-select id="track" fullWidth *ngIf="!track_codes.length" placeholder="No Track Available"></nb-select>
+          </div>
+
+          <div class="form-group mb-0" [nbSpinner]="loadingRaces">
+            <label for="race" class="label">Choose Race:</label>
+            <nb-select id="race" fullWidth
+              *ngIf="race_nums.length"
+              (selectedChange)="loadRaceEntries($event)"
+              placeholder="Choose a Race">
+                <nb-option *ngFor="let race of race_nums" [value]="race.race_num">{{ race.race_num }}</nb-option>
+            </nb-select>
+            <nb-select id="race" fullWidth *ngIf="!race_nums.length" placeholder="No Race Available"></nb-select>
+          </div>
+
+        </nb-card-body>
+      </nb-card>
+
+      <nb-card>
+        <nb-card-body>
+          <h6 class="text-center">Ticket Builder</h6>
+          <div class="ticket recommendation" *ngIf="recommendation">
+            <p class="field-name label">Race Number: </p>
+            <p class="field-value">{{ recommendation.program_number }}</p>
+            
+            <p class="field-name label">Horse Name: </p>
+            <p class="field-value">{{ recommendation.horse_name }}</p>
+
+            <p class="field-name label">Win Rate: </p>
+            <p class="field-value">{{ math.floor((recommendation.lifetime_wins / recommendation.lifetime_sts) * 100) }}%</p>
+
+            <p class="field-name label">Jockey (Win Rate): </p>
+            <p class="field-value">{{ recommendation.jockey + " ( " + math.floor((recommendation.jockey_wins / recommendation.jockey_sts) * 100) + "% )" }}</p>
+
+            <p class="field-name label">Trainer (Win Rate): </p>
+            <p class="field-value">{{ recommendation.trainer + " ( " + math.floor((recommendation.trainer_wins / recommendation.trainer_sts) * 100) + "% )" }}</p>
+          </div>
+        </nb-card-body>
+      </nb-card>
+    </div>
+
+    <!-- Races & Entries -->
+    <div class="col-md-10 main-content" [nbSpinner]="loadingRaceDetails">
+      <div class="row detail-board" *ngIf="race_details">
+        <div class="col-md-3 col-sm-3 text-center">
+          <h5 class="page-title" *ngIf="!race_details">Race Info</h5>
+          <h5 class="page-title" *ngIf="race_details">{{ race_details.track.track_name + " " + race_details.race_num }}</h5>
+
+          <svg width="120px" height="160px" viewBox="0 0 120 160" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                <!-- Dirt -->
+                <path *ngIf="race_details && race_details.surface == 'D'" d="M22,63 L27,63 L27,46.4208465 C27,29.0952756 41.2003125,15 58.6549922,15 L61.3450078,15 C78.7996875,15 93,29.0952756 93,46.4208465 L93,63 L98,63 L98,113.522591 C98,133.63635 81.5539595,150 61.3395,150 L58.6605,150 C38.4460405,150 22,133.63635 22,113.522591 L22,63 Z M58.6549922,15 C41.2003125,15 27,29.0952756 27,46.4208465 L27,113.579154 C27,130.904724 41.2003125,145 58.6549922,145 L61.3450078,145 C78.7996875,145 93,130.904724 93,113.579154 L93,46.4208465 C93,29.0952756 78.7996875,15 61.3450078,15 L58.6549922,15 Z" id="Combined-Shape" fill="#C47B59"></path>
+                <!-- END: Dirt -->
+                <!-- Turf -->
+                <path *ngIf="race_details && race_details.surface == 'T'" d="M22,63 L27,63 L27,46.4208465 C27,29.0952756 41.2003125,15 58.6549922,15 L61.3450078,15 C78.7996875,15 93,29.0952756 93,46.4208465 L93,63 L98,63 L98,113.522591 C98,133.63635 81.5539595,150 61.3395,150 L58.6605,150 C38.4460405,150 22,133.63635 22,113.522591 L22,63 Z M58.6549922,15 C41.2003125,15 27,29.0952756 27,46.4208465 L27,113.579154 C27,130.904724 41.2003125,145 58.6549922,145 L61.3450078,145 C78.7996875,145 93,130.904724 93,113.579154 L93,46.4208465 C93,29.0952756 78.7996875,15 61.3450078,15 L58.6549922,15 Z" id="Combined-Shape" fill="green"></path>
+                <!-- END: Turf -->
+                <path *ngIf="!race_details" d="M22,63 L27,63 L27,46.4208465 C27,29.0952756 41.2003125,15 58.6549922,15 L61.3450078,15 C78.7996875,15 93,29.0952756 93,46.4208465 L93,63 L98,63 L98,113.522591 C98,133.63635 81.5539595,150 61.3395,150 L58.6605,150 C38.4460405,150 22,133.63635 22,113.522591 L22,63 Z M58.6549922,15 C41.2003125,15 27,29.0952756 27,46.4208465 L27,113.579154 C27,130.904724 41.2003125,145 58.6549922,145 L61.3450078,145 C78.7996875,145 93,130.904724 93,113.579154 L93,46.4208465 C93,29.0952756 78.7996875,15 61.3450078,15 L58.6549922,15 Z" id="Combined-Shape" fill="#C4CED5"></path>
+
+                <path d="M27,63 L22,63 L22,46.4774088 C22,26.3636496 38.4460405,10 58.6605,10 L61.3395,10 C81.5539595,10 98,26.3636496 98,46.4774088 L98,63 L93,63 L93,46.4208465 C93,29.0952756 78.7996875,15 61.3450078,15 L58.6549922,15 C41.2003125,15 27,29.0952756 27,46.4208465 L27,63 Z" id="Combined-Shape" fill="#C4CED5"></path>
+
+                <g id="Group" transform="translate(98.500000, 61.140137)" fill="#FFFFFF">
+                    <g id="Group-3-Copy-5" transform="translate(7.743774, 0.000000)" fill-rule="nonzero">
+                        <polygon id="F" points="5.63377957 1.44732833 2.20342957 1.44732833 2.20342957 3.26645333 5.12442457 3.26645333 5.12442457 4.55543333 2.20342957 4.55543333 2.20342957 7.55958833 0.758524574 7.55958833 0.758524574 0.158348333 5.63377957 0.158348333"></polygon>
+                    </g>
+                    <polygon id="Triangle" transform="translate(3.500000, 3.814245) rotate(-90.000000) translate(-3.500000, -3.814245) " points="3.5 0.814245244 7 6.81424524 0 6.81424524"></polygon>
+                </g>
+                <g id="Group-Copy" transform="translate(17.012072, 65.234619) scale(-1, 1) translate(-17.012072, -65.234619) translate(13.512072, 61.234619)" fill="#FFFFFF">
+                    <polygon id="Triangle" transform="translate(3.500000, 3.814245) rotate(-90.000000) translate(-3.500000, -3.814245) " points="3.5 0.814245244 7 6.81424524 0 6.81424524"></polygon>
+                </g>
+                <path d="M12.1250806,66.5479434 C12.1250806,67.9824534 10.9296556,68.7932634 9.38080059,68.7932634 C8.25814059,68.7932634 7.40575059,68.5541784 6.67810059,67.8161334 L7.61365059,66.8805834 C8.08142559,67.3483584 8.71552059,67.5042834 9.40159059,67.5042834 C10.2539806,67.5042834 10.7113606,67.1820384 10.7113606,66.5895234 C10.7113606,66.3296484 10.6385956,66.1113534 10.4826706,65.9658234 C10.3371406,65.8306884 10.1708206,65.7579234 9.82778559,65.7059484 L8.93381559,65.5812084 C8.29972059,65.4876534 7.83194559,65.2901484 7.49930559,64.9679034 C7.14587559,64.6144734 6.96916059,64.1363034 6.96916059,63.5126034 C6.96916059,62.1924384 7.94629059,61.2672834 9.54712059,61.2672834 C10.5658306,61.2672834 11.3038756,61.5167634 11.9379706,62.1300684 L11.0232106,63.0344334 C10.5554356,62.5874484 9.99410559,62.5250784 9.50554059,62.5250784 C8.73631059,62.5250784 8.36209059,62.9512734 8.36209059,63.4606284 C8.36209059,63.6477384 8.42446059,63.8452434 8.58038559,63.9907734 C8.72591559,64.1259084 8.96500059,64.2402534 9.26645559,64.2818334 L10.1396356,64.4065734 C10.8153106,64.5001284 11.2415056,64.6872384 11.5533556,64.9782984 C11.9483656,65.3525184 12.1250806,65.8930584 12.1250806,66.5479434 Z" id="S" fill="#FFFFFF" fill-rule="nonzero"></path>
+                <rect id="Rectangle" fill="#FFFFFF" x="93" y="62" width="5" height="6"></rect>
+                <rect id="Rectangle-Copy" fill="#FFFFFF" x="22" y="62" width="5" height="6"></rect>
+            </g>
+          </svg>
+        </div>
+        <div class="col-md-9 col-sm-9 pt-1">
+          <div class="row">
+            <div class="col-md-3 col-sm-4">
+              <p><strong class="label">Distance: </strong><span class="race-info">{{ race_details.distance / 220 }}F</span></p>
+              <p><strong class="label">Surface: </strong><span class="race-info">{{ APP_DATA.track_surface[race_details.surface] }}</span></p>
+              <p><strong class="label">Race Type: </strong><span class="race-info">{{ APP_DATA.race_types[race_details.race_type] }}</span></p>
+              <p><strong class="label">Classification: </strong><span class="race-info">{{ race_details.classification }}</span></p>
+            </div>
+            <div class="col-md-5 col-sm-8">
+              <p><strong class="label">Restrictions: </strong><span class="race-info">{{ APP_DATA.restrictions_1st[race_details.restriction.charAt(0)] + " | " + APP_DATA.restrictions_2nd[race_details.restriction.charAt(1)] + " | " + APP_DATA.restrictions_3rd[race_details.restriction.charAt(2)] }}</span></p>
+              <p><strong class="label">Purse: </strong><span class="race-info">{{ race_details.purse ? race_details.purse/1000 : "0" }}k</span></p>
+              <p><strong class="label">Claiming Price: </strong><span class="race-info">{{ race_details.claiming_price ? race_details.claiming_price/1000 : "0" }}k</span></p>
+              <p><strong class="label">Track Record: </strong><span class="race-info">{{ race_details.track_record ? race_details.track_record + "s" : "" }}</span></p>
+            </div>
+          </div>
+        </div>
+  
+        
+
+        <div class="col-md-12">
+          <nb-card class="list-section">
+            <nb-card-body class="list-items">
+              <ng-container *ngIf="voided_entries.length">
+                <div class="d-flex mb-3">
+                  <ng-container *ngFor="let pm of voided_entries">
+                    <span class="program-number mr-1" [ngStyle]="{'background-color': track_colors['c_' + pm].towel_color, 'color': track_colors['c_' + pm].number_color}" (click)="validEntry(pm)">{{ pm }}</span>
+                  </ng-container>
+                </div>
+              </ng-container>
+              <div class="list-item table-header">
+                <div class="highlights">
+                  <p><b></b></p>
+                  <p><b></b></p>
+                  <p><b class="label">Entry Name</b></p>
+                  <p class="number"><b class="label">Win</b></p>
+                  <p class="number"><b class="label">M/L</b></p>
+                  <p><b class="label">Trainer</b></p>
+                  <p><b class="label">Jockey</b></p>
+                  <!-- <p><b class="label">A1</b></p>
+                  <p><b class="label">P1</b></p>
+                  <p><b class="label">A2</b></p>
+                  <p><b class="label">P2</b></p> -->
+                  <!-- <p><b class="label">ES</b></p>
+                  <p><b class="label">FORM</b></p> -->
+                  <!-- <p><b class="label">Total</b></p> -->
+                  <p><b class="label">Odds</b></p>
+                  <!-- <p><b>Description</b></p> -->
+                </div>
+              </div>
+              <ng-container *ngFor="let entry of race_details.entries">
+                <div class="list-item" (click)="toggleEntryDetails($event, 'expanded', race_details.id, entry.id)" *ngIf="!isVoided(entry.program_number)">
+                  <div class="highlights">
+                    <p><span class="program-number" *ngIf="entry && entry.track_color" [ngStyle]="{'background-color': entry.track_color.towel_color, 'color': entry.track_color.number_color}">{{ entry.program_number }}</span></p>
+                    <p (click)="voidEntry(entry.program_number)"><nb-icon icon="eye-off-outline"></nb-icon></p>
+                    <p><b>{{ entry.horse_name }}</b></p>
+                    <p class="number">{{ math.floor((entry.lifetime_wins / entry.lifetime_sts) * 100) }}%</p>
+                    <p class="number">{{ lcm2(entry.morning_line_odds * 100, 100)/100 + " / " + lcm2(entry.morning_line_odds * 100, 100)/(entry.morning_line_odds * 100) }}</p>
+                    <p>{{ entry.trainer }}</p>
+                    <p>{{ entry.jockey }}</p>
+                    <!-- <p>0</p>
+                    <p>0</p>
+                    <p></p>
+                    <p>0</p> -->
+                    <p><input type="text" class="form-control"></p>
+                    <!-- <p><b></b></p> -->
+                  </div>
+                  <div class="extra-info" [nbSpinner]="loadingEntryDetails">
+                    <!-- Entry Info -->
+                    <div class="row">
+                      <div class="col-sm-4">
+                        <label class="label">Trainer</label>
+                        <p>{{ entry.trainer + " ( " + entry.trainer_sts + " - " + entry.trainer_wins + " - " + entry.trainer_places + " - " + entry.trainer_shows + ",  " + math.floor(entry.trainer_wins * 100/entry.trainer_sts) + "% )"}}</p>
+                      </div>
+                      <div class="col-sm-4">
+                        <label class="label">Jockey</label>
+                        <p>{{ entry.jockey + " ( " + entry.jockey_sts + " - " + entry.jockey_wins + " - " + entry.jockey_places + " - " + entry.jockey_shows + ",  " + math.floor(entry.jockey_wins * 100/entry.jockey_sts) + "% )"}}</p>
+                      </div>
+                      <div class="col-sm-4">
+                        <label class="label">Owner</label>
+                        <p>{{ entry.owner }}</p>
+                      </div>
+                      <div class="col-sm-4">
+                        <label class="label">Current Year {{ "( " + entry.cur_year + " )" }}</label>
+                        <p>{{ entry.cur_year_sts + " - " + entry.cur_year_wins + " - " + entry.cur_year_places + " - " + entry.cur_year_shows + ",  $" + entry.cur_year_earnings }}</p>
+                      </div>
+                      <div class="col-sm-4">
+                        <label class="label">Today's Distance</label>
+                        <p>{{ entry.tdy_dist_sts + " - " + entry.tdy_dist_wins + " - " + entry.tdy_dist_places + " - " + entry.tdy_dist_shows + ",  $" + entry.tdy_dist_earnings }}</p>
+                      </div>
+                      <div class="col-sm-4">
+                        <label class="label">Lifetime</label>
+                        <p>{{ entry.lifetime_sts + " - " + entry.lifetime_wins + " - " + entry.lifetime_places + " - " + entry.lifetime_shows + ",  $" + entry.lifetime_earnings }}</p>
+                      </div>
+                      <div class="col-sm-4">
+                        <label class="label">Previous Year {{ "( " + entry.prev_year + " )" }}</label>
+                        <p>{{ entry.prev_year_sts + " - " + entry.prev_year_wins + " - " + entry.prev_year_places + " - " + entry.prev_year_shows + ",  $" + entry.prev_year_earnings }}</p>
+                      </div>
+                      <div class="col-sm-4">
+                        <label class="label">Lifetime Turf Wins</label>
+                        <p>{{ entry.lifetime_turf_sts + " - " + entry.lifetime_turf_wins + " - " + entry.lifetime_turf_places + " - " + entry.lifetime_turf_shows + ",  $" + entry.lifetime_turf_earnings }}</p>
+                      </div>
+                      <div class="col-sm-4">
+                        <label class="label">Today's track</label>
+                        <p>{{ entry.tdy_track_sts + " - " + entry.tdy_track_wins + " - " + entry.tdy_track_places + " - " + entry.tdy_track_shows + ",  $" + entry.tdy_track_earnings }}</p>
+                      </div>
+                    </div>
+                    <!-- END: Entry Info -->
+
+                    <!-- Past Performances -->
+                    <div class="row past-performance" *ngIf="entry_details">
+                      <div class="col-sm-12 mt-4">
+                        <h5>Past Performances</h5>
+                      </div>
+                      <div class="col-sm-12">
+                        <table>
+                          <!-- <thead>
+                            <tr>
+                              <th></th>
+                              <th></th>
+                              <th></th>
+                              <th></th>
+                              <th></th>
+                              <th></th>
+                            </tr>
+                          </thead> -->
+                          <tbody>
+                            <ng-container *ngFor="let performance of entry_details.past_performances">
+                              <tr>
+                                <td>{{ performance.race_date }}</td>
+                                <td>{{ performance.race_num }}</td>
+                                <td>{{ performance.track_code }}</td>
+                                <td>{{ performance.condition }}</td>
+                                <td>{{ performance.distance/220 + "F" }}</td>
+                                <td>~</td>
+                                <td>~</td>
+                                <td>~</td>
+                                <td>{{ performance.classification }}</td>
+                                <td>{{ performance.bris_speed_rating }}</td>
+                                <td>~</td>
+                                <td>~</td>
+                                <td>~</td>
+                                <td>~</td>
+                                <td>{{ performance.jockey }}</td>
+                                <td>{{ performance.weight }}</td>
+                                <td>{{ lcm2(performance.odds * 100, 100)/100 + " / " + lcm2(performance.odds * 100, 100)/(performance.odds * 100) }}</td>
+                                <td>{{ performance.speed_rating }}</td>
+                                <td>{{ performance.track_variant }}</td>
+                                <td>{{ performance.winner_name + " " + performance.winner_weight_carried + " " + performance.winner_margin }}</td>
+                                <td>{{ performance.second_place_name + " " + performance.second_place_weight_carried + " " + performance.second_place_margin }}</td>
+                                <td>{{ performance.third_place_name + " " + performance.third_place_weight_carried + " " + performance.third_place_margin }}</td>
+                                <td>{{ performance.trip_comment }}</td>
+                                <td>{{ performance.num_of_entrants }}</td>
+                              </tr>
+                            </ng-container>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                    <!-- END: Past Performances -->
+
+                    <!-- Workouts -->
+                    <div class="row" *ngIf="entry_details">
+                      <div class="col-sm-12 mt-4">
+                        <h5>Workouts</h5>
+                      </div>
+                      <ng-container *ngFor="let workout of entry_details.workouts">
+                        <div class="col-sm-4">
+                          {{ formatWorkout(workout) }}
+                        </div>
+                      </ng-container>
+                    </div>
+                    <!-- END: Workouts -->
+                  </div>
+
+                </div>
+              </ng-container>
+              
+            </nb-card-body>
+          </nb-card>
+        </div>
+      </div>
+    </div>
+    <!-- END: Races & Entries -->
+
+  </div>
+</div>

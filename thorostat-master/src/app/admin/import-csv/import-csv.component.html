@@ -1,0 +1,48 @@
+<!-- Page Title -->
+<div class="row">
+  <div class="col-md-12">
+    <h5 class="page-title">Import CSV</h5>
+  </div>
+</div>
+<!-- END Page Title -->
+
+<!-- Content -->
+<div class="row">
+  <div class="col-md-12">
+    <nb-card [nbSpinner]="loading">
+      <nb-card-body>
+        
+        <form [formGroup] = "uploadForm" (ngSubmit)="onSubmit()" >
+          <!-- Users Contents -->
+          <p>Select csv files to upload..</p>
+          <div class="form-group">
+            <input  
+              formControlName="files"
+              id="files"
+              type="file"
+              multiple
+              class="form-control"
+              accept=".csv,.drf"
+              (change)="onFileChange($event)">
+          </div>
+          <div class="form-group">
+            <button nbButton type="submit" status="primary">Import</button>
+          </div>
+          <!-- END Users Contents -->
+        </form>
+
+      </nb-card-body>
+    </nb-card>
+    
+
+    <ng-container *ngIf="progressInfos.length > 0">
+      <h5>{{message}}</h5><br>
+      <ng-container *ngFor="let progress of progressInfos">
+        <label>{{progress.file_name}}</label>
+        <nb-progress-bar [value]="progress.value"></nb-progress-bar>
+      </ng-container>
+    </ng-container>
+    
+  </div>
+</div>
+<!-- END Content -->

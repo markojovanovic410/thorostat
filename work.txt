@@ -1,0 +1,45 @@
+thorostat_api
+
+- install package.
+	composer require laravel/passport
+- database setting
+	create "thorostat" database in mysql
+	Database charset utf8, Database collation, utf8_general_ci
+	
+	php artisan migrate
+- create the encryption keys
+	php artisan passport:install
+- run server
+	php artisan serve
+	php artisan serve --host=0.0.0.0 --port=8080
+
+thorostat
+- install
+install node.js
+npm install -g @angular/cli
+npm update
+
+- uninstall angular/cli
+
+npm uninstall -g @angular/cli
+npm cache clean --force
+
+- run
+ng serve
+
+- patch thorostat
+	src/app/app.moudle.ts	line 56
+		modify baseEndpoint to localhost
+	src/app/_config/_conf.ts
+		private server....
+
+
+
+
+
+
+
+reversing
+045A19E		reading end.
+
+Custom_4_8_443D60 last analyzing.
