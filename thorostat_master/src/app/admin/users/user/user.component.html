@@ -1,0 +1,154 @@
+<!-- Page Title -->
+<div class="row">
+  <div class="col-md-6">
+    <h5 class="page-title">Add User</h5>
+  </div>
+  <div class="col-md-6 text-right">
+    <!-- <button nbButton status="default" (click)="saveUser()" class="btn-back" >Back</button> -->
+    <a class="btn-back" nbButton status="default" (click)="back()">Back</a>
+    <button nbButton status="primary" (click)="saveUser()" >SAVE</button>
+  </div>
+</div>
+<!-- END Page Title -->
+
+<!-- Content -->
+<div class="row">
+  <div class="col-md-12">
+    <nb-card [nbSpinner]="loadingUser">
+      <nb-card-body>
+
+        <form name="user_form" [formGroup]="user_form">
+
+          <div class="row main-content">
+            <!-- User Logo/Avatar -->
+            <div class="col-sm-12 col-md-6">
+              <div class="avatar-upload" [nbSpinner]="uploadingAvatar">
+                <div class="avatar-edit">
+                    <input type="file"
+                      id="imageUpload" 
+                      accept=".png, .jpg, .jpeg" 
+                      (change)="onAvatarChange($event)"/>
+                    <label for="imageUpload">
+                      <nb-icon icon="edit-2-outline"></nb-icon>
+                      Upload Avatar
+                    </label>
+                </div>
+                <div class="avatar-preview">
+                  <div id="imagePreview">
+                    <img *ngIf="avatar" src="{{ avatar_base_url + avatar }}" />
+                    <nb-icon *ngIf="!avatar" icon="person-outline"  style="width:100%;height:100%;opacity:.1"></nb-icon>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- END User Logo/Avatar -->
+
+            <!-- User Info Details -->
+            <div class="col-sm-12 col-md-6 pt-5">
+              
+              <!-- <div class="form-group row">
+                <label for="phone" class="label col-sm-3 col-form-label">Account Status</label>
+                <div class="col-sm-9">
+                  <ui-switch></ui-switch>
+                </div>
+              </div> -->
+              
+              <div class="form-group row">
+                <label for="user_type" class="label col-sm-3 col-form-label">User Type:</label>
+                <div class="col-sm-6">
+                  <nb-select id="user_type" fullWidth
+                    formControlName="user_type"
+                    name="user_type"
+                    placeholder="User Type">
+                      <nb-option *ngFor="let key of objectKeys(user_types)" [value]="user_types[key].value" >{{ user_types[key].text }}</nb-option>
+                  </nb-select>
+                  <ng-container *ngIf="errors && errors?.user_type">
+                    <p class="caption status-danger mb-0" *ngFor="let msg of errors.user_type">
+                      {{ msg }}
+                    </p>
+                  </ng-container>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label for="first_name" class="label col-sm-3 col-form-label">First Name:</label>
+                <div class="col-sm-6">
+                  <input type="text" nbInput formControlName="first_name" fullWidth id="first_name" placeholder="First Name">
+                  <ng-container *ngIf="errors && errors?.first_name">
+                    <p class="caption status-danger mb-0" *ngFor="let msg of errors?.first_name">
+                      {{ msg }}
+                    </p>
+                  </ng-container>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label for="last_name" class="label col-sm-3 col-form-label">Last Name:</label>
+                <div class="col-sm-6">
+                  <input type="text" nbInput formControlName="last_name" fullWidth id="last_name" placeholder="Last Name">
+                  <ng-container *ngIf="errors && errors?.last_name">
+                    <p class="caption status-danger mb-0" *ngFor="let msg of errors?.last_name">
+                      {{ msg }}
+                    </p>
+                  </ng-container>
+                </div>
+              </div>
+              
+              <div class="form-group row">
+                <label for="email" class="label col-sm-3 col-form-label">Email:</label>
+                <div class="col-sm-6">
+                  <input type="email" nbInput formControlName="email" fullWidth id="email" placeholder="Email">
+                  <ng-container *ngIf="errors && errors?.email">
+                    <p class="caption status-danger mb-0" *ngFor="let msg of errors?.email">
+                      {{ msg }}
+                    </p>
+                  </ng-container>
+                </div>
+              </div>
+              
+              <div class="form-group row" *ngIf="!user_id">
+                <label for="password" class="label col-sm-3 col-form-label">Password:</label>
+                <div class="col-sm-6">
+                  <input type="password" nbInput formControlName="password" fullWidth id="password" placeholder="Password">
+                  <ng-container *ngIf="errors && errors?.password">
+                    <p class="caption status-danger mb-0" *ngFor="let msg of errors?.password">
+                      {{ msg }}
+                    </p>
+                  </ng-container>
+                </div>
+              </div>
+              
+              <div class="form-group row" *ngIf="!user_id">
+                <label for="password_confirmation" class="label col-sm-3 col-form-label">Confirmation:</label>
+                <div class="col-sm-6">
+                  <input type="password" formControlName="password_confirmation" nbInput fullWidth id="password_confirmation" placeholder="Confirmation">
+                  <ng-container *ngIf="errors && errors?.password_confirmation">
+                    <p class="caption status-danger mb-0" *ngFor="let msg of errors?.password_confirmation">
+                      {{ msg }}
+                    </p>
+                  </ng-container>
+                </div>
+              </div>
+              
+              <div class="form-group row">
+                <label for="phone" class="label col-sm-3 col-form-label">Phone:</label>
+                <div class="col-sm-6">
+                  <input type="text" nbInput formControlName="phone" fullWidth id="phone" placeholder="Phone">
+                  <ng-container *ngIf="errors && errors?.phone">
+                    <p class="caption status-danger mb-0" *ngFor="let msg of errors?.phone">
+                      {{ msg }}
+                    </p>
+                  </ng-container>
+                </div>
+              </div>
+
+            </div>
+            <!-- END User Info Details -->
+          </div>
+        </form>
+
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>
+<!-- END Content -->

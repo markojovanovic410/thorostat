@@ -1,0 +1,218 @@
+/**
+ * HEADER
+ */
+
+/* Navigation */
+.horizontal-menu .menu-items {
+  display: flex;
+}
+.horizontal-menu .menu-items .menu-item {
+  border: none;
+}
+
+.horizontal-menu .menu-items.ng-trigger {
+  position: absolute;
+  background: #fff !important;
+}
+.horizontal-menu .menu-items.ng-trigger .menu-item {
+  border: none !important;
+}
+/* END Navigation */
+
+/* Page Content */
+.page-title {
+  /* border-bottom: #1a213833 2px solid; */
+  padding-left: .5rem;
+  margin-bottom: 1rem;
+}
+/* END Page Content */
+
+/**
+ * END HEADER
+ */
+
+
+/**
+ * CONTENT
+ */
+.content-header {
+  display: flex;
+
+}
+.content-header .partner-filter,
+.content-header .customer-filter {
+  padding-right: 2rem;
+}
+.content-header .partner-filter span,
+.content-header .customer-filter span {
+  padding-right: 1rem;
+}
+.tbl-filters {
+  display: flex;
+  align-items: center;
+}
+.tbl-filters ui-switch {
+  padding-left: 3rem;
+  display: flex;
+}
+
+.filter-section {
+  margin-top: 1rem;
+}
+.filter-section .filters {
+  background-color: #edf1f7;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-around;
+  border-radius: 5px;
+}
+.filter-section .filters input {
+  margin: 0 .5rem;
+}
+
+ul.tabset {
+  background: #f7f9fc;
+}
+ul.tabset li.active {
+  background-color: #fff;
+  margin-top: -2px;
+}
+ul.tabset li.active a.tab-link {
+  color: #424242;
+}
+ul.tabset li.active a:before {
+  display: none;
+}
+
+.list-section {
+  margin-top: 1rem;
+}
+.list-section .list-item {
+  margin-bottom: .5rem;
+  border-radius: 5px;
+}
+.list-section .list-item:nth-child(odd) .highlights {
+  background-color: #19203888;
+}
+.list-section .list-item:nth-child(even) .highlights {
+  background-color: #222b45;
+}
+.list-section .list-item.table-header {
+  border-color: #1a2138;
+}
+.list-section .list-item:hover .highlights,
+.list-section .list-item.expanded .highlights,
+.list-section .list-item.table-header .highlights {
+  background-color: #1a2138;
+  border-color: #1a2138;
+  cursor: pointer;
+}
+.list-section .list-item .highlights {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  border: 1px solid #192038;
+}
+.list-section .list-item .extra-info {
+  display: none;
+  padding: 1rem 2rem;
+  padding-left: 5rem;
+}
+.list-section .list-item.expanded .extra-info {
+  display: block;
+}
+.list-section .list-item.expanded .extra-info .label {
+  margin-bottom: 0;
+}
+.list-section .list-item.expanded .extra-info .label + p {
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+.list-section .list-item .extra-info > div {
+  display: flex;
+  /* justify-content: space-between; */
+}
+.list-section .list-item .extra-info > div.info-header p {
+  font-weight: 600;
+}
+.list-section .list-item .extra-info > div p {
+  text-align: left;
+}
+.list-section .list-item p {
+  margin-bottom: 0;
+}
+.list-section .list-item .actions a {
+  padding-left: .5rem;
+}
+
+.avatar-upload {
+  position: relative;
+  max-width: 250px;
+  margin: 50px auto;
+  border-radius: 50%;
+  overflow: hidden;
+}
+.avatar-upload:hover {
+  cursor: pointer;
+}
+.avatar-upload:hover .avatar-edit {
+  opacity: .8;
+}
+.avatar-upload .avatar-edit {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 85px;
+  z-index: 1;
+  background: #edf1f7;
+  opacity: 0;
+  transition: all .5s;
+}
+.avatar-upload .avatar-edit *,
+.avatar-upload .avatar-edit *:hover {
+  cursor: pointer;
+}
+.avatar-upload .avatar-edit input {
+  display: none;
+}
+.avatar-upload .avatar-edit input + label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  text-align: center;
+  color: #151a30;
+  line-height: 85px;
+}
+.avatar-upload .avatar-preview {
+  width: 250px;
+  height: 250px;
+  position: relative;
+  /* border-radius: 100%; */
+  border: 6px solid #edf1f788;
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  overflow: hidden;
+}
+.avatar-upload .avatar-preview > div {
+  width: 100%;
+  height: 100%;
+  /* border-radius: 100%; */
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  display: flex;
+}
+.avatar-upload .avatar-preview > div img {
+  object-fit: cover;
+  max-width: 100%;
+}
+
+.info-group input:not(:last-child) {
+  margin-bottom: .5rem;
+}
+/**
+ * END CONTENT
+ */

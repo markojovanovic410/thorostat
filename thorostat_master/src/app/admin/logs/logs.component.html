@@ -1,0 +1,86 @@
+<!-- Page Title -->
+<div class="row">
+  <div class="col-md-12">
+    <h5 class="page-title">Action Logs</h5>
+  </div>
+</div>
+<!-- END Page Title -->
+
+<!-- Content -->
+<div class="row">
+  <div class="col-md-12">
+    <nb-card>
+      <nb-card-body>
+
+        <div class="row">
+          <div class="col-md-12 text-right content-header">
+            
+            <div class="customer-filter filter">
+              <span>By User: </span>
+              <nb-select selected="1">
+                <nb-option value="1">User 1</nb-option>
+                <nb-option value="2">User 2</nb-option>
+              </nb-select>
+            </div>
+
+            <div class="partner-filter filter">
+              <span>By Action Type: </span>
+              <nb-select selected="1">
+                <nb-option value="1">Action 1</nb-option>
+                <nb-option value="2">Action 2</nb-option>
+              </nb-select>
+            </div>
+
+            <div class="customer-filter filter">
+              <span>Date From: </span>
+              <input nbInput
+                  placeholder="Date From"
+                  [nbDatepicker]="formpickerFrom">
+              <nb-datepicker #formpickerFrom></nb-datepicker>
+            </div>
+
+            <div class="customer-filter filter">
+              <span>To: </span>
+              <input nbInput
+                  placeholder="Date To"
+                  [nbDatepicker]="formpickerTo">
+              <nb-datepicker #formpickerTo></nb-datepicker>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Customers Contents -->
+        <div class="row list-section">
+          <div class="col-md-12">
+            <div class="list-items">
+
+              <div class="list-item" (click)="toggleDetails($event, 'expanded')">
+                <div class="highlights">
+                  <p><b>Event Type</b></p>
+                  <p>Description</p>
+                  <p>customer_id</p>
+                  <p>user_id</p>
+                  <p>event_datetime</p>
+                </div>
+              </div>
+
+              <div class="list-item" (click)="toggleDetails($event, 'expanded')">
+                <div class="highlights">
+                  <p><b>Event Type</b></p>
+                  <p>Description</p>
+                  <p>customer_id</p>
+                  <p>user_id</p>
+                  <p>event_datetime</p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <!-- END Customers Contents -->
+
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>
+<!-- END Content -->

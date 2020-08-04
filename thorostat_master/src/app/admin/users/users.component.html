@@ -1,0 +1,86 @@
+<!-- Page Title -->
+<div class="row">
+  <div class="col-md-6">
+    <h5 class="page-title">User Management</h5>
+  </div>
+  <div class="col-md-6 text-right">
+    <button nbButton status="primary" class="btn-add" (click)="addNew()" >+ NEW USER</button>
+  </div>
+</div>
+<!-- END Page Title -->
+
+<!-- Content -->
+<div class="row">
+  <div class="col-md-12">
+    <nb-card [nbSpinner]="loadingUsers">
+      <nb-card-body>
+
+        <!-- Column Filters -->
+        <div class="row filter-section" *ngIf="toggleFilters">
+          <div class="col-md-12">
+            <div class="filters">
+              <input type="text" nbInput fullWidth placeholder="User name">
+              <input type="text" nbInput fullWidth placeholder="User Type">
+              <input type="text" nbInput fullWidth placeholder="Email Address">
+              <input type="text" nbInput fullWidth placeholder="Phone">
+              <input type="text" nbInput fullWidth placeholder="Status">
+            </div>
+          </div>
+        </div>
+        <!-- END Column Filters -->
+        
+        <!-- Users Contents -->
+        <div class="row list-section">
+          <div class="col-md-12">
+            <div class="list-items" *ngIf="users.length">
+
+              <div class="list-item table-header">
+                <div class="highlights">
+                  <p class="avatar"></p>
+                  <p><b>Full Name</b></p>
+                  <p><b>User Role</b></p>
+                  <p><b>Email</b></p>
+                  <p><b>Phone</b></p>
+                  <p><b>Action</b></p>
+                </div>
+              </div>
+              
+              <div class="list-item" *ngFor="let user of users" >
+                <div class="highlights">
+                  <p class="avatar">
+                    <img *ngIf="user.avatar" src="{{ avatar_base_url + user.avatar }}" >
+                    <!-- <img *ngIf="!user.avatar" class="no-avatar" src="assets/thorostat_logo.png" > -->
+                    <nb-icon *ngIf="!user.avatar" icon="person-outline"  style="width:100%;height:100%;opacity:.1"></nb-icon>
+                  </p>
+                  <p><b>{{ user.first_name + " " + user.last_name }}</b></p>
+                  <p>{{ user.user_type.toString() == '1' ? "Admin" : "End User" }}</p>
+                  <p>{{ user.email ? user.email : "-" }}</p>
+                  <p>{{ user.phone ? user.phone : "-" }}</p>
+                  <div class="actions">
+                    <a href="admin/users/edit/{{ user.id }}"><nb-icon icon="edit-2-outline"></nb-icon></a>
+                    <a (click)="deleteUser(dialog, user.id)"><nb-icon icon="trash-2-outline"></nb-icon></a>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <!-- END Users Contents -->
+
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>
+<!-- END Content -->
+
+<ng-template #dialog let-data let-ref="dialogRef">
+  <nb-card>
+    <nb-card-header>Warning!</nb-card-header>
+    <nb-card-body>Are you sure?</nb-card-body>
+    <nb-card-footer>
+      <button nbButton class="btn-confirm-delete" (click)="confirmDelete(data)">Confirm</button>
+      <button nbButton (click)="ref.close()">Cancel</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
